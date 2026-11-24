@@ -12,7 +12,7 @@ function restrict(){if(coach?.role!=='admin'){document.querySelectorAll('#plansT
 const beforeRender=render;render=function(){beforeRender();restrict()};
 $('importJson').closest('.field').hidden=true;$('clearAll').hidden=true;$('profAge').closest('.field').hidden=true;
 async function start(user){account=user;busy=true;try{await loadCloud();$('cloudLogin').hidden=true;$('cloudBar').hidden=false;document.querySelector('main').style.display='';openTab('dashboard')}catch(e){alert('Kunde inte läsa molndata: '+e.message);account=null}finally{busy=false}}
-$('loginForm').onsubmit=async e=>{e.preventDefault();if(!client)return alert('Supabase kunde inte laddas. Kontrollera internet.');try{const data=check(await client.auth.signInWithPassword({email:$('email').value,password:$('password').value}));$('password').value='';await start(data.user)}catch(e){alert(e.message)}};
+$('loginForm').onsubmit=async e=>{e.preventDefault();if(!client)return alert('Supabase kunde inte laddas. Kontrollera internet.');try{const data=check(await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value}));$('password').value='';await start(data.user)}catch(e){alert(e.message)}};
 $('cloudRefresh').onclick=async()=>{if(busy||dirty)return alert('Spara färdigt först.');busy=true;try{await loadCloud()}catch(e){status(e.message)}finally{busy=false}};
 $('cloudRetry').onclick=cloudSave;$('cloudLogout').onclick=async()=>{if(busy||dirty)return alert('Spara färdigt först.');try{check(await client.auth.signOut());location.reload()}catch(e){status(e.message)}};
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
