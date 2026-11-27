@@ -1,1 +1,1 @@
-// Polar integration disabled in v3.9.
+// Polar integration disabled.
